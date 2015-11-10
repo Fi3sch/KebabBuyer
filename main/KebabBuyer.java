@@ -26,8 +26,8 @@ public class KebabBuyer extends PollingScript<ClientContext>implements PaintList
 		Recourses.status = "Started";
 		Recourses.startTime = System.currentTimeMillis();
 		Recourses.kebabCount = 0;
-		Collections.addAll(Arrays.asList(new Bank(ctx), new BuyKebab(ctx), new TraverseBank(ctx), new OpenDoor(ctx)));
-		//taskList.addAll(Arrays.asList(new Bank(ctx), new BuyKebab(ctx), new TraverseBank(ctx), new OpenDoor(ctx)));
+		//Collections.addAll(Arrays.asList(new Bank(ctx), new BuyKebab(ctx), new TraverseBank(ctx), new OpenDoor(ctx)));
+		taskList.addAll(Arrays.asList(new Bank(ctx), new BuyKebab(ctx), new TraverseBank(ctx), new OpenDoor(ctx)));
 	}
 
 	@Override
