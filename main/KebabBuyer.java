@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.powerbot.script.Script;
@@ -16,7 +17,7 @@ import org.powerbot.script.PaintListener;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.rt4.ClientContext;
 
-@Script.Manifest(name = "[OS]KebabBuyer", description = "Buys kebabs at Karim in Al-Karid. Please start in Al-Karid Bank!", properties = "client=4")
+@Script.Manifest(name = "[OS]KebabBuyer by Fiesch", description = "Buys kebabs at Karim in Al-Karid. Please start in Al-Karid Bank!", properties = "client=4")
 public class KebabBuyer extends PollingScript<ClientContext>implements PaintListener, MessageListener {
 	public List<Task> taskList = new ArrayList<>();
 
@@ -25,8 +26,8 @@ public class KebabBuyer extends PollingScript<ClientContext>implements PaintList
 		Recourses.status = "Started";
 		Recourses.startTime = System.currentTimeMillis();
 		Recourses.kebabCount = 0;
-
-		taskList.addAll(Arrays.asList(new Bank(ctx), new BuyKebab(ctx), new TraverseBank(ctx), new OpenDoor(ctx)));
+		Collections.addAll(Arrays.asList(new Bank(ctx), new BuyKebab(ctx), new TraverseBank(ctx), new OpenDoor(ctx)));
+		//taskList.addAll(Arrays.asList(new Bank(ctx), new BuyKebab(ctx), new TraverseBank(ctx), new OpenDoor(ctx)));
 	}
 
 	@Override
@@ -98,10 +99,10 @@ public class KebabBuyer extends PollingScript<ClientContext>implements PaintList
 		DecimalFormat nf = new DecimalFormat("0.0");
 		double i = start;
 		if (i >= 1000000) {
-			return nf.format((i / 1000000)) + "M";
+			return nf.format((i / 1000000));
 		}
 		if (i >= 1000) {
-			return nf.format((i / 1000)) + "K";
+			return nf.format((i / 1000));
 		}
 		return "" + start;
 	}
