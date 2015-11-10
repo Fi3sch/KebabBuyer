@@ -28,52 +28,56 @@ public class Bank extends Task<ClientContext> {
 		if (bank.inViewport()) {
 			Recourses.status = "Banking";
 			if (ctx.bank.opened()) {
-				ctx.bank.depositInventory();
-				Condition.wait(new Callable<Boolean>() {
-					@Override
-					public Boolean call() throws Exception {
-						return ctx.inventory.select().count() == 0;
-					}
-				}, 250, 8);
-				ctx.bank.withdraw(Recourses.goldId, 10000);
+				if(ctx.bank.depositInventory()){
+					Condition.wait(new Callable<Boolean>() {
+						@Override
+						public Boolean call() throws Exception {
+							return ctx.inventory.select().count() == 0;
+						}
+					}, 250, 8);					
+				}
+				
+				if(ctx.bank.withdraw(Recourses.goldId, 10000)){
+					Condition.wait(new Callable<Boolean>() {
+						@Override
+						public Boolean call() throws Exception {
+							return !ctx.inventory.select().id(Recourses.goldId).isEmpty();
+						}
+					}, 250, 8);					
+				}
 
-				Condition.wait(new Callable<Boolean>() {
-					@Override
-					public Boolean call() throws Exception {
-						return !ctx.inventory.select().id(Recourses.goldId).isEmpty();
-					}
-				}, 250, 8);
+				if(ctx.bank.close()){
+					Condition.wait(new Callable<Boolean>() {
+						@Override
+						public Boolean call() throws Exception {
+							return !ctx.bank.opened();
+						}
+					}, 250, 8);					
+				}
 
-				ctx.bank.close();
-
-				Condition.wait(new Callable<Boolean>() {
-					@Override
-					public Boolean call() throws Exception {
-						return !ctx.bank.opened();
-					}
-				}, 250, 8);
 
 			} else {
-				bank.interact("Bank", "Bank booth");
-				Condition.wait(new Callable<Boolean>() {
-					@Override
-					public Boolean call() throws Exception {
-						return ctx.bank.opened();
-					}
-				}, 250, 8);
+				if(bank.interact("Bank", "Bank booth")){
+					Condition.wait(new Callable<Boolean>() {
+						@Override
+						public Boolean call() throws Exception {
+							return ctx.bank.opened();
+						}
+					}, 250, 8);					
+				}
 			}
 		} else {
 			Recourses.status = "Moving to bank";
-			ctx.movement.step(bank); 
+			if(ctx.movement.step(bank)){
+				Condition.wait(new Callable<Boolean>() {
+					@Override
+					public Boolean call() throws Exception {
+						return Math.abs(ctx.players.local().tile().x() - ctx.movement.destination().x()) < 5
+								&& Math.abs(ctx.players.local().tile().y() - ctx.movement.destination().y()) < 5;
+					}
+				}, 250, 5);
+			}
 			ctx.camera.turnTo(bank);
-
-			Condition.wait(new Callable<Boolean>() {
-				@Override
-				public Boolean call() throws Exception {
-					return Math.abs(ctx.players.local().tile().x() - ctx.movement.destination().x()) < 5
-							&& Math.abs(ctx.players.local().tile().y() - ctx.movement.destination().y()) < 5;
-				}
-			}, 250, 5);
 		}
 
 	}

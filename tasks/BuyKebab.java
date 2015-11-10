@@ -44,41 +44,45 @@ public class BuyKebab extends Task<ClientContext>{
 				
 				if(Recourses.karim.inViewport()){
 					Recourses.status = "Buying kebab";
-					Recourses.karim.interact("Talk-to");	
 					
-					
-					Condition.wait(new Callable<Boolean>() {
-						@Override
-						public Boolean call() throws Exception {
-							return ctx.widgets.widget(231).component(2).visible();
+					if(Recourses.karim.interact("Talk-to")){
+						Condition.wait(new Callable<Boolean>() {
+							@Override
+							public Boolean call() throws Exception {
+								return ctx.widgets.widget(231).component(2).visible();
+							}
+						}, 250, 5);
+						
+						if(ctx.widgets.widget(231).component(2).click()){
+							Condition.wait(new Callable<Boolean>() {
+								@Override
+								public Boolean call() throws Exception {
+									return ctx.widgets.widget(219).component(0).component(2).visible();
+								}
+							}, 250, 5);
 						}
-					}, 250, 5);
-					
-					ctx.widgets.widget(231).component(2).click();
-					
-					Condition.wait(new Callable<Boolean>() {
-						@Override
-						public Boolean call() throws Exception {
-							return ctx.widgets.widget(219).component(0).component(2).visible();
+						
+						
+						if(ctx.widgets.widget(219).component(0).component(2).click()){
+							Condition.wait(new Callable<Boolean>() {
+								@Override
+								public Boolean call() throws Exception {
+									return ctx.widgets.widget(217).component(2).visible();
+								}
+							}, 250, 5);
 						}
-					}, 250, 5);
-					ctx.widgets.widget(219).component(0).component(2).click();
-					
-					Condition.wait(new Callable<Boolean>() {
-						@Override
-						public Boolean call() throws Exception {
-							return ctx.widgets.widget(217).component(2).visible();
+						
+						
+						if(ctx.widgets.widget(217).component(2).click()){
+							Condition.wait(new Callable<Boolean>() {
+								@Override
+								public Boolean call() throws Exception {
+									return !ctx.widgets.widget(217).component(2).visible();
+								}
+							}, 250, 5);							
 						}
-					}, 250, 5);
-					
-					ctx.widgets.widget(217).component(2).click();
-					
-					Condition.wait(new Callable<Boolean>() {
-						@Override
-						public Boolean call() throws Exception {
-							return !ctx.widgets.widget(217).component(2).visible();
-						}
-					}, 250, 5);
+					}
+						
 				}else{
 					ctx.camera.turnTo(Recourses.karim);
 					ctx.movement.step(Recourses.karim);
@@ -86,15 +90,15 @@ public class BuyKebab extends Task<ClientContext>{
 				
 			}else{
 				Recourses.status = "Moving to Karim";
-				ctx.movement.newTilePath(Recourses.path).traverse();
-
-				Condition.wait(new Callable<Boolean>() {
-					@Override
-					public Boolean call() throws Exception {
-						return Math.abs(ctx.players.local().tile().x() - ctx.movement.destination().x()) < 5
-								&& Math.abs(ctx.players.local().tile().y() - ctx.movement.destination().y()) < 5;
-					}
-				}, 250, 5);
+				if(ctx.movement.newTilePath(Recourses.path).traverse()){
+					Condition.wait(new Callable<Boolean>() {
+						@Override
+						public Boolean call() throws Exception {
+							return Math.abs(ctx.players.local().tile().x() - ctx.movement.destination().x()) < 5
+									&& Math.abs(ctx.players.local().tile().y() - ctx.movement.destination().y()) < 5;
+						}
+					}, 250, 5);
+				}
 			}
 		}
 	}

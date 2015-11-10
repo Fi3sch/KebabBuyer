@@ -25,16 +25,14 @@ public class TraverseBank extends Task<ClientContext>{
 	@Override
 	public void execute() {
 		Recourses.status = "Moving to Bank";
-		ctx.movement.newTilePath(Recourses.path).reverse().traverse();
-
-		Condition.wait(new Callable<Boolean>() {
-			@Override
-			public Boolean call() throws Exception {
-				return Math.abs(ctx.players.local().tile().x() - ctx.movement.destination().x()) < 5
-						&& Math.abs(ctx.players.local().tile().y() - ctx.movement.destination().y()) < 5;
-			}
-		}, 250, 5);
-		
+		if(ctx.movement.newTilePath(Recourses.path).reverse().traverse()){
+			Condition.wait(new Callable<Boolean>() {
+				@Override
+				public Boolean call() throws Exception {
+					return Math.abs(ctx.players.local().tile().x() - ctx.movement.destination().x()) < 5
+							&& Math.abs(ctx.players.local().tile().y() - ctx.movement.destination().y()) < 5;
+				}
+			}, 250, 5);
+		}		
 	}
-
 }
