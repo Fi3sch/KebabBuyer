@@ -113,6 +113,5 @@ public class KebabBuyer extends PollingScript<ClientContext>implements PaintList
 		if(msg.equals("you buy a kebab.")){
 			Recourses.kebabCount++;
 		}
-	
 	}
 }
