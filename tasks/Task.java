@@ -1,7 +1,5 @@
 package tasks;
 
-import main.*;
-
 import org.powerbot.script.ClientAccessor;
 import org.powerbot.script.ClientContext;
 

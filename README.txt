@@ -13,3 +13,4 @@ To do list:
   -More efficient
   -Getting Price from Websites
   -Fail safe for Door
+  -Logging in

@@ -5,8 +5,6 @@ import main.*;
 import java.util.concurrent.Callable;
 
 import org.powerbot.script.Condition;
-import org.powerbot.script.MessageEvent;
-import org.powerbot.script.MessageListener;
 import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.Npc;
 
@@ -26,7 +24,7 @@ public class BuyKebab extends Task<ClientContext>{
 
 	@Override
 	public void execute() {
-		Recourses.status = "Moving to Karim.";
+		Recourses.status = "Moving to karim.";
 
 		if (ctx.bank.opened()) {
 			ctx.bank.close();
@@ -40,11 +38,15 @@ public class BuyKebab extends Task<ClientContext>{
 		} else {
 			if (Recourses.kebabArea.contains(ctx.players.local())) {
 				Recourses.status = "Looking for Karim";
-				Npc karim = ctx.npcs.select().nearest().id(Recourses.karimId).poll();
+				if(Recourses.karim == null || !Recourses.karim.valid()){
+					Recourses.karim = ctx.npcs.select().nearest().id(Recourses.karimId).poll();
+				}
 				
-				if(karim.inViewport()){
+				if(Recourses.karim.inViewport()){
 					Recourses.status = "Buying kebab";
-					karim.interact("Talk-to");	
+					Recourses.karim.interact("Talk-to");	
+					
+					
 					Condition.wait(new Callable<Boolean>() {
 						@Override
 						public Boolean call() throws Exception {
@@ -78,8 +80,8 @@ public class BuyKebab extends Task<ClientContext>{
 						}
 					}, 250, 5);
 				}else{
-					ctx.camera.turnTo(karim);
-					ctx.movement.step(karim);
+					ctx.camera.turnTo(Recourses.karim);
+					ctx.movement.step(Recourses.karim);
 				}
 				
 			}else{

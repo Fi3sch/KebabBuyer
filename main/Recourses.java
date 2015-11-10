@@ -2,6 +2,7 @@ package main;
 
 import org.powerbot.script.Area;
 import org.powerbot.script.Tile;
+import org.powerbot.script.rt4.Npc;
 
 public class Recourses {
 
@@ -13,6 +14,7 @@ public class Recourses {
     public static int kebabPrice = 48;																	
     
     //Never Change
+    public static Npc karim;	//NPC und values
     public static int karimId = 529;                                      								
     public static int doorId = 7122;																	//KA
     public static int kebabId = 1971;																
